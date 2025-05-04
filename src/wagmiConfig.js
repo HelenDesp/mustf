@@ -1,7 +1,8 @@
 import { configureChains, createConfig } from 'wagmi';
-import { base } from '@wagmi/core/chains';
-import { publicProvider } from '@wagmi/core/providers/public';
-import { injected, walletConnect } from '@wagmi/connectors';
+import { base } from 'wagmi/chains';
+import { publicProvider } from 'wagmi/providers/public';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 
 // Configure chains & providers
 const { chains, publicClient } = configureChains(
@@ -13,12 +14,10 @@ const { chains, publicClient } = configureChains(
 export const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: [
-    injected({ chains, options: { name: 'Injected' } }),
-    walletConnect({
+    new InjectedConnector({ chains }),
+    new WalletConnectConnector({
       chains,
-      options: {
-        projectId: '4a489f38e57beea61afffc11e3d21ffe',
-      },
+      options: { projectId: '4a489f38e57beea61afffc11e3d21ffe' },
     }),
   ],
   publicClient,
